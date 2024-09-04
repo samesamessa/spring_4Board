@@ -13,7 +13,6 @@
 		<button type="submit">저장</button>
 	</form>
 	<br>
-			<h2>글 수정</h2>
-		<a href="modify?page=2">글 수정</a><br>
+
 </body>
 </html>

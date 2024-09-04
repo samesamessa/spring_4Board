@@ -12,6 +12,8 @@
 		<a href="write?page=1">글 쓰기</a><br>
 	<h2>상세보기</h2>
 		<a href="read?idx=6&page=3">상세보기</a><br>
+	<h2>글 수정</h2>
+		<a href="modify?idx=4&page=2">글 수정</a><br>
 	<h2>글 삭제</h2>
 		<a href="remove?idx=7&page=5">글 삭제</a><br>
 </body>

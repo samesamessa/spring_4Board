@@ -37,7 +37,7 @@ public class CommunityController {
 	}
 	
 	@GetMapping("/modify")
-	public String modify(int page) {
+	public String modify(int idx, int page) {
 		
 		return "community/modify";
 	}
