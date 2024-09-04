@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="org.iclass.dao.CommunityMapper">
+ 
+ <insert id="insert" parameterType="org.iclass.dto.CommunityDTO" 
+ 			useGeneratedKeys="false">
+	  <!-- 오라클은 idx를 시퀀스를 이용하여 값을 만듬.
+	  	useGeneratedKeys="false" -->
+ 	insert into community 
+ 		(idx, writer, title, content, ip)
+	values
+ 		(community_idx_seq.nextval,
+ 			#{writer},#{title},#{content},#{ip})
+ <!-- insert 후에 증가된 시퀀스값 (insert된 idx값) 가져오기 
+ 		: 파라미터 : "dti에 idx필드"에 저장하기 (keyProperty="idx") -->
+ 	<selectKey keyProperty="idx" resultType="int" order="AFTER">
+		 Select community_idx_seq.currval
+		 from dual
+ 	</selectKey>
+ </insert>
+ 
+ <!-- 0. 메인글 삭제 -->
+ <delete id="delete" parameterType="int">
+ 	delete community
+ 		where idx = #{idx}
+ </delete>
+ <!-- 0. 메인글 수정 (제목, 내용) -->
+ <update id="update" parameterType="org.iclass.dto.CommunityDTO">
+ 	update community
+ 		set
+ 			title = #{title},
+ 			content = #{content}
+ 		where idx = #{idx}
+ </update>
+ 
+ 
+ <!-- 1. 글 상세보기 -->
+ <select id="selectByIdx" parameterType="int" resultType="org.iclass.dto.CommunityDTO">
+	 SELECT * 
+	 FROM community 
+	 WHERE idx = #{idx}
+ </select>
+ 
+ <!-- 2. 댓글 목록 가져오기 : 매퍼 xml 을 따로 만들기 -->
+ 
+ 
+ 
+ <!-- 3. 메인글 목록 전체 개수 구하기 -->
+ <select id="getCount" resultType="int">
+	 SELECT count(*)
+	 FROM community
+ </select>
+ 
+ <!-- 4. 댓글 개수 구하기 -->
+ <select id="getCommentCount" parameterType="int" resultType="int">
+	 SELECT count(*)
+	 FROM communityComments
+	 where mref=#{mref}
+ </select>
+ 
+ <!-- 5. 메인 글 조회수 업데이트 -->
+  <update id="setReadCount" parameterType="int">
+	 UPDATE community 
+	 SET VIEWCOUNT = 
+	 	(SELECT viewcount FROM COMMUNITY WHERE idx = #{idx})+1 
+	 WHERE idx = #{idx}
+ </update>
+ 
+ <!-- 6. 댓글 개수 업데이트 -->
+ <update id="setCommentCount" parameterType="int">
+	update community
+		set COMMENTCOUNT = 
+			(select count(*) 
+				from communityComments
+				where mref = #{mref})
+ </update>
+ 
+ <!-- 7. 메인 글 목록 가져오기 / 한 페이지에 20개씩 -->
+  <select id="getList" parameterType="org.iclass.dto.PageReqDTO" resultType="org.iclass.dto.CommunityDTO">
+      select * from
+          (select rownum rnum, temp.* from
+              (select * from community order by idx desc) temp)
+      where rnum between #{start} and #{end}
+  </select>
+ 
+ 
+ </mapper>
