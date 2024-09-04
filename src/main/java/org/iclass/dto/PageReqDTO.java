@@ -10,9 +10,9 @@ import lombok.ToString;
 
 public class PageReqDTO {
 	private int page = 1;			// 요청 페이지
-	private int pageSize = 20;		// 페이지 당 글 수
-	private int start;			// 시작 글 번호
-	private int end;			// 끝 글 번호
+	private int pageSize = 10;		// 페이지 당 글 수
+	private int start;			// 시작 글 번호, 시작 rownum
+	private int end;			// 끝 글 번호 , 끝 rownum
 	
 	private PageReqDTO() {}
 	

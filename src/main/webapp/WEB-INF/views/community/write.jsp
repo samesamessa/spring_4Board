@@ -9,7 +9,9 @@
 <body>
 	<h2>글을 씁시다?</h2>
 	<form action="write" method="post">
-		<input type="text" name="content"><br>
+		<span>글 제목 : </span><input type="text" name="title"><br>
+		<p>내용 입력</p>
+		<textarea rows="10" cols="20" name="content"></textarea><br>
 		<button type="submit">저장</button>
 	</form>
 	<br>
